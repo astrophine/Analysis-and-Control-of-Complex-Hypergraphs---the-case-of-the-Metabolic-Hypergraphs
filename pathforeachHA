@@ -1,0 +1,22 @@
+%This function returns a Tensor T where each element is the hyperarch and
+%the first column are the nodes from which the hyperarch starts,and the second
+%column is formed by the nodes were the hyperarch enter
+%C is a tensor where each element is an hyperarch. The first column of each element specifies 
+%if the hyperarch enters, exits or doesn't interact with each node. The
+%second column rapresents the weight of the hyperarch.
+%A is the incidence matrix
+%V is the vector of the weights of each hyperarch
+function [T,C,A,V]=pathforeachHA(a,b)
+         [C,A,V]=weightedArandom(a,b)
+         T=tenzeros(a,2,b);
+         for j=1:b
+                   for i=1:a
+                       %if -1 the node go the the first column else to the second
+                        if C(i,1,j)==-1
+                               T(i,1,j)=i;
+                        elseif C(i,1,j)==1
+                                T(i,2,j)=i;
+                        end   
+                    end
+         end
+end
