@@ -1,0 +1,39 @@
+%This funcion returns the longest path and the weight related to it wL, the
+%shortest path and the weight related to it wS, the lenght l of the path p
+%and the lenght (number of arcs) of the shortest path lmin 
+%The inputs of this functions are the matrix Paths and the vectors Weight
+%given by the function pathfinderv3 and p which rapresents the single path
+%of the matrix Paths 
+"""
+
+function [Longest,wL,Shortest,wS,l,lmin]=LongestShortest(Paths,Weights,p)
+         wL=max(Weights);
+         i=find(Weights==wL);
+         Longest=Paths(i+1,:); 
+         wS=min(Weights);
+         j=find(Weights==wS);
+         Shortest=Paths(j+1,:);
+                  
+       
+         l=0;
+         lmin=0;
+         [a,b]=size(Paths);
+
+         %the index j corresponds to the colum 
+             for j=1:b
+                  %we evaluate the lenght of the path p 
+                 if Paths(p,j)==0 %it stops counting when we reach the first zero
+                 else l=l+1;
+                 end
+                 %we evaluate the lenght of the shortest path 
+                 if Shortest(j)==0 %it stops counting when we reach the first zero
+                 else lmin=lmin+1;
+                 end  
+                 
+             end
+%we need to substract 1 because we are looking for the number of arcs which
+%are the number of nodes less 1 
+l=l-1;       
+lmin=lmin-1;
+  
+end
