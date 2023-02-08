@@ -1,0 +1,46 @@
+function [np,posizionepoz,ns,posizionesor]=WellsandSources(matrices)
+[n,m]=size(matrices);
+%number of wells and position
+np=0;
+t=1;
+posizionepoz(t)=0;
+j=1;
+
+while(j<m)
+    a=0;
+    for i=1:n
+       if(matrices(i,j)==1) %to boolean value to control the presence of 1
+           a=1;
+       else 
+           continue;
+       end
+     end
+     if(~a) %if a is zero increments the number of wells and saves the current position
+           np=np+1;
+           posizionepoz(t)=j;
+           t=t+1;  
+     end
+       j=j+1;
+end
+ns=0;
+t=1;
+posizionesor(t)=0;
+j=1;
+while(j<m)
+    a=0;
+    for i=1:n
+       if(matrices(i,j)==-1)
+           a=1;
+       else 
+           continue;
+       end
+     end
+     if(~a)
+           ns=ns+1;
+           posizionesor(t)=j;
+           t=t+1; 
+     end
+       j=j+1;
+end
+  
+end
