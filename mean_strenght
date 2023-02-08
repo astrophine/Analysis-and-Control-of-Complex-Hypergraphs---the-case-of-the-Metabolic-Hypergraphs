@@ -1,0 +1,34 @@
+%this function returns the value F which is the absolute value of the difference between the mean value of 
+%the output strenght and mean value of the input strenght
+
+function [F]=mean_strenght (inc_mat, weights)
+s_o=0;
+s_i=0;
+[a,b]=size(inc_mat); %extract the number of rows and columns of the incidence matrix
+n=ceil(b/10);          %whole number of wells and sources
+%fixed a column, which rapresents an hyperarch, it finds the well node and
+%computes the strenght
+for i=(b-n+1):b
+    for j=1:a
+        if inc_mat(j,i)==-1                        %if j node is a well compute the strenght
+            str=strenght(inc_mat, weights,j);   
+            s_o=s_o+str;                           %sum the strenght of each well node found
+        end 
+    end 
+end 
+%compute the mean value of the strenght of the n nodes well 
+strenght_output=s_o/n; 
+%fixed a column, which rapresents an hyperarch, it finds the source node and
+%computes the strenght 
+for i=1:n
+    for j=1:a 
+        if inc_mat(j,i)==1                          %if node j is a source compute the strenght
+            str_source=strenght(inc_mat,weights,j);   
+            s_i=s_i+str_source;                      %sum the strenght of each source node found
+        end 
+    end 
+end 
+%compute the mean value of the strenght of the n nodes source
+strenght_input=s_i/n;
+
+F= abs(strenght_output - strenght_input);
