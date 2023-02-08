@@ -1,0 +1,37 @@
+function [C,A,V]=weightedArandom(a,b)
+         %this function is used to generate in a random way the values for our
+         %matrices, we used the matlab function to change the seed for the MATLAB® random number generator. 
+         % The rng function controls the global stream, which determines how the rand, randi, randn, and randperm functions produce a sequence of random numbers. 
+         % To create one or more independent streams separate from the global stream
+         rng('shuffle','combRecursive');
+         %generate an incidence matrix
+         
+         A=Acaso(a,b);
+         %generate the weights vector
+         V=randperm(1000,b);
+         %generate a tensor
+         C=tenrand(a,2,b);
+         %generate a random number for change the sign of some weight
+         for k=1:b
+             p=rand(1);
+             if p <= 0.26
+                 V(k) = -V(k);
+             end
+         end
+         V;
+         %for each hyperarc we match the relative weigth
+             for j=1:b
+                 C(:,1,j)=A(:,j);
+                 C(:,2,j)=V(j);
+             end
+             %if there isn't any connection between the nodes in the incidence matrix the
+             %weight is zero
+             for r=1:a
+                 for u=1:b
+                     if C(r,1,u)==0
+                         C(r,2,u)=0;
+                     end
+                 end
+             end
+end
+            
