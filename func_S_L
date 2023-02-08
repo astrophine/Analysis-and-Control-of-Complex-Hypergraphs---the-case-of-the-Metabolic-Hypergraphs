@@ -1,0 +1,50 @@
+%The number of paths between sources and wells is (a*6)-1, where a is the
+%number of rows of the index matrix 
+
+%The purpose of this function is first to calculate the value of S, and secondly to calculate L, given by the
+%product between the terms S and F
+ 
+
+%Before calling this function is fundamental to call the following
+%function:pathforHA
+function [S,F,L]=func_S_L(T,V,a,b,inc_mat)
+%a corresponds to the number of rows of the index matrix 
+%b corresponds to the number of columns of the index matrix
+
+n=ceil(b/10); %n is the whole number of the sources and wells
+%D,H,J are the indices used to calculate the mean values S,F,L 
+D=0; 
+H=0;
+J=0;
+sum=0;
+o=0; %o is an index used to iterate the process 50 times 
+
+%Due to the fact that the matrices "PATHS" and "WEIGHTS" change everytime
+%they are called, we calculate F, S and L 50 times and we calculate their
+%mean values. In this way the error is minimum and it is implemented
+%through the following while 
+while(o<=50)
+    %the first "for" browses down the sources while the second browses down the wells
+for i=1:n
+    for j=(b-n+1):b
+        [PATHS,WEIGHTS]=pathfinderv3(T,V,a,b,i,j); %the function pathfinderv3 returns one matrix and one vector: 
+        %the matrix corresponds to the paths that link the source i with the
+        %well j; the vector corresponds to the weight of each path
+
+        %m is the row of the matrix PATHS so it rapresents the single path between i and j 
+        for m=2:((a*6)-1)
+            [Longest,wL,Shortest,wS,l,lmin]=LongestShortest(PATHS,WEIGHTS,m);
+            product=((WEIGHTS(m-1))/(wL))*((lmin)/(l));
+            sum=sum+product;
+        end
+    end
+end
+D=sum+D;
+H=mean_strenght (inc_mat,V)+H; 
+J=H*D+J;
+o=o+1;
+end
+S=D/o;
+F=H/o;
+L=J/o;
+end
