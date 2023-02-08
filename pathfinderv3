@@ -1,0 +1,117 @@
+function [PATHS,WEIGHTS]=pathfinderv3(T,V,a,b,r,d)
+         n=ceil(b/10);
+         d=b-d+1;
+         w=1;
+         c=2;
+         WEIGHTS=zeros(w,1);
+         %we will store the path in a matrix
+         PATHS= zeros(c,a*2);
+         WEIGHT=V(r);
+         P=r;
+         x=1;
+         %we set the nodes to find
+         found=r;
+            while(c<a*6)
+                  for j=1:b
+                       for i=1:a
+                            if T(i,1,j)==found
+                                       L=find(T(:,2,j));
+                                       p=length(L);
+                                       %if we don't find anything we start
+                                       %again
+                                       if p==0;
+                                          found=r;
+                                          P=r;
+                                          x=1;
+                                          WEIGHT=V(r);
+                                       else
+                                       %otherwise we update the current
+                                       %path with the current node and
+                                       %weight of the Hyperarch
+                                          WEIGHT=WEIGHT+V(j);
+                                       %we will explore the hypergraph in a
+                                       %random way with k
+                                          k=randi([1 p]);
+                                          found=L(k);
+                                          x=x+1;
+                                          P(x)=L(k);
+                                       end
+                                       %the path is complete when the last
+                                       %node is the one we search
+                                       if P(x)==(a+1-d)
+                                           t=length(P);
+                                           %we put a limit to the dimension
+                                           %of the path, this avoids having
+                                           %a path that enters more than once in
+                                           %the same cycle
+                                           if t<=a*2
+                                               %to avoid cycle
+                                               if t>3
+                                                   for g=2:t
+                                                       node=P(g);
+                                                       B=find(P==P(g));
+                                                       h=length(B);
+                                                       for pippo=g:B(1)
+                                                           cycle=zeros(1,t);
+                                                           cycle(pippo)=P(g:B(1));
+                                                       end
+                                                       cycle;
+                                                       if length(cycle)<length(P(B(1):t))
+                                                          if find(P(B(1):t)==cycle)
+                                                             clearvars P
+                                                             x=1;
+                                                             P=r;
+                                                             found=r;
+                                                             WEIGHT=0;
+                                                             i=0;
+                                                             break
+                                                          end
+                                                       end
+                                                   end
+                                               end
+                                                 u=0;
+                                                 m=0;
+                                                 for l=1:(c-1)
+                                                    O=find(PATHS(l,1:t)==P);
+                                                    if length(O)==t
+                                                        u=u+1;
+                                                    end
+                                                 end
+                                                if w>1
+                                                   for z=1:w-1;
+                                                      if WEIGHTS(z)==WEIGHT
+                                                          m=m+1;
+                                                      end
+                                                   end
+                                                end
+                                                %a path with the same nodes
+                                                %and weight of others is a 
+                                                % copy so it's useless 
+                                                if u==0 & m==0
+                                                    PATHS(c,1:t)=P;
+                                                    c=c+1;
+                                                    WEIGHTS(w)=WEIGHT;
+                                                    w=w+1;
+                                                elseif u>0 & m==0
+                                                   PATHS(c,1:t)=P;
+                                                   c=c+1;
+                                                   WEIGHTS(w)=WEIGHT;
+                                                   w=w+1;
+                                                end
+                                           end
+                                           %in any case we must
+                                           %inizialize again our
+                                           %variables
+                                           clearvars P;
+                                           x=1;
+                                           P=r;
+                                           found=r;
+                                           WEIGHT=0;
+                                           i=0;
+                                           j;
+                                       end
+                            end
+                       end
+                  end
+            end    
+end
