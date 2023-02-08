@@ -1,0 +1,37 @@
+"""
+the function return the strenght of the node row i
+"""
+
+function str=strenght(incid_mat,vect_weig,i);
+
+%Argument of the function:
+%incid_mat--Incidence Matrix
+%vect_weig--vector of the weight of the hyperarc
+%i--row i of the Incidence Matrix
+
+
+%Define the dimension of the Incidence Matrix 
+[m,n]=size(incid_mat); %m row, n column
+
+%copy the row i of the Incidence Matrix in a support vector "row"
+row=incid_mat(i,:);
+
+
+%use another support vector "vect": it includes 0 if the hyperarc does not
+%affect the node i, it includes the value of the weight if the hyperarc
+%affects the node i
+
+for a=1:m
+    if  row(a)==1 || row(a)==-1
+        vect(a)=vect_weig(a);
+    else
+        vect(a)=0;  
+    end
+end
+
+%does the sum of the element of "vect": i do the sum of all the hyperarc that
+%affect the node i
+
+str=sum(vect);
+                
+%str is the value of the strenght of the node i
