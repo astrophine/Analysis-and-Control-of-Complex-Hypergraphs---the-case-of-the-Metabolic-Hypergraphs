@@ -6,12 +6,12 @@ function [C,A,V]=weightedArandom(a,b)
          rng('shuffle','combRecursive');
          %generate an incidence matrix
          
-         A=Acaso(a,b);
+         A=Arandom(a,b);
          %generate the weights vector
          V=randperm(1000,b);
          %generate a tensor
          C=tenrand(a,2,b);
-         %generate a random number for change the sign of some weight
+         %generate a random number to change the sign of some weight
          for k=1:b
              p=rand(1);
              if p <= 0.26
