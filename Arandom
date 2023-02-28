@@ -19,7 +19,7 @@ function A=Arandom(a,b)
                               else continue
                               end
                           end
-                      i=i+1
+                      i=i+1;
                       end
                       if(p > 0.89)
                           for j=1:a
@@ -29,7 +29,7 @@ function A=Arandom(a,b)
                                end
                           end
                       end
-                      i=i+1
+                      i=i+1;
                   end
               return 
             
